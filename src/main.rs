@@ -91,8 +91,14 @@ impl OrderBook {
                 let price = Price::new(price);
                 let limit = self.bids.get_mut(&price);
                 match limit {
-                    Some(limit) => println!("Already got a limit"),
-                    None => println!("Need to craete a limit"),
+                    Some(limit) => {
+                        limit.add_order(order);
+                    }
+                    None => {
+                        let mut new_limit = Limit::new(price);
+                        new_limit.add_order(order);
+                        self.bids.insert(price, new_limit);
+                    }
                 }
             }
         }
