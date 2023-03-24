@@ -1,19 +1,23 @@
+#[derive(Debug)]
 struct Order {
     size: f64,
     order_type: BidOrAsk,
 }
 
+#[derive(Debug)]
 struct Price {
     integral: u64,
     fractional: u64,
     scaler: u64,
 }
 
+#[derive(Debug)]
 struct Limit {
     price: Price,
-    oredr: Vec<Order>,
+    order: Vec<Order>,
 }
 
+#[derive(Debug)]
 enum BidOrAsk {
     Bid,
     Ask,
@@ -22,6 +26,15 @@ enum BidOrAsk {
 impl Order {
     fn new(size: f64, order_type: BidOrAsk) -> Order {
         Order { size, order_type }
+    }
+}
+
+impl Limit {
+    fn new(price: f64) -> Limit {
+        Limit {
+            price: Price::new(price),
+            order: Vec::new(),
+        }
     }
 }
 
@@ -39,5 +52,7 @@ impl Price {
 }
 
 fn main() {
-    println!("Hello, world!");
+    // let price = Price::new(50.1);
+    let limit = Limit::new(50.1);
+    println!("{:?}", limit);
 }
