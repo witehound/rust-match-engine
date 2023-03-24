@@ -1,5 +1,5 @@
 mod match_engine;
-use match_engine::orderbook::*;
+use match_engine::{engine::*, orderbook::*};
 fn main() {
     // let price = Price::new(50.1);
     let mut order_book = OrderBook::new();
@@ -10,6 +10,8 @@ fn main() {
     order_book.add_limit_order(5.5, buy_order);
     order_book.add_limit_order(4.0, sell_order);
     order_book.add_limit_order(4.0, sell_order_two);
+
+    let engine = MatchingEngine::new();
 
     println!("{:?}", order_book);
 }
