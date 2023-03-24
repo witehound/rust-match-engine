@@ -9,7 +9,7 @@ struct Order {
 #[derive(Debug)]
 struct OrderBook {
     asks: HashMap<Price, Limit>,
-    buys: HashMap<Price, Limit>,
+    bids: HashMap<Price, Limit>,
 }
 
 #[derive(Debug)]
@@ -59,6 +59,15 @@ impl Price {
             integral,
             fractional,
             scaler,
+        }
+    }
+}
+
+impl OrderBook {
+    fn new() -> OrderBook {
+        OrderBook {
+            bids: HashMap::new(),
+            asks: HashMap::new(),
         }
     }
 }
