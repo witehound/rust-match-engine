@@ -1,7 +1,15 @@
+use std::collections::HashMap;
+
 #[derive(Debug)]
 struct Order {
     size: f64,
     order_type: BidOrAsk,
+}
+
+#[derive(Debug)]
+struct OrderBook {
+    asks: HashMap<Price, Limit>,
+    buys: HashMap<Price, Limit>,
 }
 
 #[derive(Debug)]
