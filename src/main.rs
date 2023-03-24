@@ -12,7 +12,7 @@ struct OrderBook {
     bids: HashMap<Price, Limit>,
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq, Hash)]
 struct Price {
     integral: u64,
     fractional: u64,
@@ -70,14 +70,37 @@ impl OrderBook {
             asks: HashMap::new(),
         }
     }
+
+    fn add_limit_order(&mut self, price: f64, order: Order) {
+        match order.order_type {
+            BidOrAsk::Ask => {
+                let price = Price::new(price);
+                let limit = self.asks.get_mut(&price);
+                match limit {
+                    Some(limit) => println!("Already got a limit"),
+                    None => println!("Need to craete a limit"),
+                }
+            }
+            BidOrAsk::Bid => {
+                let price = Price::new(price);
+                let limit = self.bids.get_mut(&price);
+                match limit {
+                    Some(limit) => println!("Already got a limit"),
+                    None => println!("Need to craete a limit"),
+                }
+            }
+        }
+    }
 }
 
 fn main() {
     // let price = Price::new(50.1);
-    let mut limit = Limit::new(63.45);
+    let mut order_book = OrderBook::new();
     let buy_order = Order::new(5.5, BidOrAsk::Bid);
     let sell_order = Order::new(4.0, BidOrAsk::Ask);
-    limit.add_order(buy_order);
-    limit.add_order(sell_order);
-    println!("{:?}", limit);
+
+    order_book.add_limit_order(5.5, buy_order);
+    order_book.add_limit_order(4.0, sell_order);
+
+    println!("{:?}", order_book);
 }
