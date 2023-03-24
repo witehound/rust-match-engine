@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 struct Order {
     size: f64,
     order_type: BidOrAsk,
@@ -12,20 +12,20 @@ struct OrderBook {
     bids: HashMap<Price, Limit>,
 }
 
-#[derive(Debug, PartialEq, Eq, Hash)]
+#[derive(Debug, PartialEq, Eq, Hash, Clone, Copy)]
 struct Price {
     integral: u64,
     fractional: u64,
     scaler: u64,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 struct Limit {
     price: Price,
     orders: Vec<Order>,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 enum BidOrAsk {
     Bid,
     Ask,
@@ -38,9 +38,9 @@ impl Order {
 }
 
 impl Limit {
-    fn new(price: f64) -> Limit {
+    fn new(price: Price) -> Limit {
         Limit {
-            price: Price::new(price),
+            price,
             orders: Vec::new(),
         }
     }
@@ -77,8 +77,14 @@ impl OrderBook {
                 let price = Price::new(price);
                 let limit = self.asks.get_mut(&price);
                 match limit {
-                    Some(limit) => println!("Already got a limit"),
-                    None => println!("Need to craete a limit"),
+                    Some(limit) => {
+                        limit.add_order(order);
+                    }
+                    None => {
+                        let mut new_limit = Limit::new(price);
+                        new_limit.add_order(order);
+                        self.asks.insert(price, new_limit);
+                    }
                 }
             }
             BidOrAsk::Bid => {
@@ -98,9 +104,11 @@ fn main() {
     let mut order_book = OrderBook::new();
     let buy_order = Order::new(5.5, BidOrAsk::Bid);
     let sell_order = Order::new(4.0, BidOrAsk::Ask);
+    let sell_order_two = Order::new(10.0, BidOrAsk::Ask);
 
     order_book.add_limit_order(5.5, buy_order);
     order_book.add_limit_order(4.0, sell_order);
+    order_book.add_limit_order(4.0, sell_order_two);
 
     println!("{:?}", order_book);
 }
