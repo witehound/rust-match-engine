@@ -14,7 +14,7 @@ struct Price {
 #[derive(Debug)]
 struct Limit {
     price: Price,
-    order: Vec<Order>,
+    orders: Vec<Order>,
 }
 
 #[derive(Debug)]
@@ -33,8 +33,12 @@ impl Limit {
     fn new(price: f64) -> Limit {
         Limit {
             price: Price::new(price),
-            order: Vec::new(),
+            orders: Vec::new(),
         }
+    }
+
+    fn add_order(&mut self, order: Order) {
+        self.orders.push(order);
     }
 }
 
@@ -53,6 +57,10 @@ impl Price {
 
 fn main() {
     // let price = Price::new(50.1);
-    let limit = Limit::new(50.1);
+    let mut limit = Limit::new(63.45);
+    let buy_order = Order::new(5.5, BidOrAsk::Bid);
+    let sell_order = Order::new(4.0, BidOrAsk::Ask);
+    limit.add_order(buy_order);
+    limit.add_order(sell_order);
     println!("{:?}", limit);
 }
