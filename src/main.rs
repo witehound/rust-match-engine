@@ -11,7 +11,7 @@ fn main() {
     order_book.add_limit_order(4.0, sell_order);
     order_book.add_limit_order(4.0, sell_order_two);
 
-    let engine = MatchingEngine::new();
+    // let engine = MatchingEngine::new();
 
     println!("{:?}", order_book);
 }
