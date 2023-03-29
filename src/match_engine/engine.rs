@@ -35,11 +35,19 @@ impl MatchingEngine {
         println!("Opening new orderbook for market {:?}", pair.to_string());
     }
 
-    pub fn place_limit_order(&mut self, pair: TradingPair, price: f64, order: Order) {
+    pub fn place_limit_order(
+        &mut self,
+        pair: TradingPair,
+        price: f64,
+        order: Order,
+    ) -> Result<(), String> {
         let market = self.orderbooks.get_mut(&pair);
         match market {
-            Some(market) => market.add_limit_order(price, order),
-            None => println!("{:?} market is yet to be added", pair.to_string()),
+            Some(market) => {
+                market.add_limit_order(price, order);
+                Ok(())
+            }
+            None => Err(format!("{:?} market is yet to be added", pair.to_string())),
         }
     }
 }
