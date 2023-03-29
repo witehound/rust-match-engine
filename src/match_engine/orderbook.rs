@@ -127,3 +127,24 @@ impl OrderBook {
         }
     }
 }
+
+#[cfg(test)]
+pub mod tests {
+    use super::*;
+
+    #[test]
+    fn limit_order_fill() {
+        let price = Price::new(10000.0);
+        let mut limit = Limit::new(price);
+
+        let buy_limit_order = Order::new(100.0, BidOrAsk::Bid);
+
+        limit.add_order(buy_limit_order);
+
+        let mut market_sell_order = Order::new(90.0, BidOrAsk::Ask);
+
+        limit.fill_order(&mut market_sell_order);
+
+        println!("{:?}", limit);
+    }
+}
