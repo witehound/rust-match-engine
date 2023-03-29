@@ -181,4 +181,18 @@ pub mod tests {
 
         assert_eq!(limit.orders.get(1).unwrap().size, 149.0);
     }
+
+    #[test]
+    fn total_limit() {
+        let price = Price::new(10000.0);
+        let mut limit = Limit::new(price);
+
+        let buy_limit_order_a = Order::new(100.0, BidOrAsk::Bid);
+        let buy_limit_order_b = Order::new(155.0, BidOrAsk::Bid);
+
+        limit.add_order(buy_limit_order_a);
+        limit.add_order(buy_limit_order_b);
+
+        assert_eq!(limit.total_volume(), 255.0);
+    }
 }
