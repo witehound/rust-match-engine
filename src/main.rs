@@ -24,7 +24,7 @@ fn main() {
     let usdc_btc = TradingPair::new("USDC".to_string(), "BTC".to_string());
 
     engine.add_new_market(usdc_btc.clone());
-    let sell_order_four = Order::new(10.0, BidOrAsk::Ask);
+    let sell_order_four = Order::new(10.0, BidOrAsk::Bid);
     engine
         .place_limit_order(usdc_btc, 5.5, sell_order_four)
         .unwrap();
