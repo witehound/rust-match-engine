@@ -11,7 +11,11 @@ fn main() {
     order_book.add_limit_order(4.0, sell_order);
     order_book.add_limit_order(4.0, sell_order_two);
 
-    let engine = MatchingEngine::new();
+    // println!("{:?}", order_book);
 
-    println!("{:?}", order_book);
+    let mut engine = MatchingEngine::new();
+
+    let usd_eth = TradingPair::new("usd".to_string(), "eth".to_string());
+
+    engine.add_new_market(usd_eth)
 }

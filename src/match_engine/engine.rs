@@ -7,7 +7,7 @@ pub struct MatchingEngine {
     orderbooks: HashMap<TradingPair, OrderBook>,
 }
 
-#[derive(Eq, Hash, PartialEq, Debug)]
+#[derive(Eq, Hash, PartialEq, Debug, Clone)]
 pub struct TradingPair {
     base: String,
     quote: String,
@@ -27,6 +27,7 @@ impl MatchingEngine {
     }
 
     pub fn add_new_market(&mut self, pair: TradingPair) {
-        self.orderbooks.insert(pair, OrderBook::new());
+        self.orderbooks.insert(pair.clone(), OrderBook::new());
+        println!("Opening new orderbook for market {:?}", pair);
     }
 }
