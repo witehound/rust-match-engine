@@ -15,7 +15,7 @@ fn main() {
 
     let mut engine = MatchingEngine::new();
 
-    let usd_eth = TradingPair::new("usd".to_string(), "eth".to_string());
+    let usdc_eth = TradingPair::new("USDC".to_string(), "ETH".to_string());
 
-    engine.add_new_market(usd_eth)
+    engine.add_new_market(usdc_eth)
 }

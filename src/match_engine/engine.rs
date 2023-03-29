@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use super::orderbook::OrderBook;
+use super::orderbook::*;
 
 #[derive(Debug)]
 pub struct MatchingEngine {
@@ -17,6 +17,10 @@ impl TradingPair {
     pub fn new(base: String, quote: String) -> TradingPair {
         TradingPair { base, quote }
     }
+
+    pub fn to_string(&self) -> String {
+        format!("{}-{}", self.base, self.quote)
+    }
 }
 
 impl MatchingEngine {
@@ -28,6 +32,14 @@ impl MatchingEngine {
 
     pub fn add_new_market(&mut self, pair: TradingPair) {
         self.orderbooks.insert(pair.clone(), OrderBook::new());
-        println!("Opening new orderbook for market {:?}", pair);
+        println!("Opening new orderbook for market {:?}", pair.to_string());
+    }
+
+    pub fn place_limit_order(&mut self, pair: TradingPair, price: f64, order: Order) {
+        let market = self.orderbooks.get_mut(&pair);
+        match market {
+            Some(market) => market.add_limit_order(price, order),
+            None => println!("{:?} market is yet to be added", pair.to_string()),
+        }
     }
 }
