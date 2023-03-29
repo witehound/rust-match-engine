@@ -71,6 +71,14 @@ impl Limit {
             }
         }
     }
+
+    pub fn total_volume(&mut self) -> f64 {
+        let mut size: f64 = 0.0;
+        for limit_order in self.orders.iter_mut() {
+            size += limit_order.size;
+        }
+        size
+    }
 }
 
 impl Price {
