@@ -35,6 +35,10 @@ impl Order {
     pub fn new(size: f64, order_type: BidOrAsk) -> Order {
         Order { size, order_type }
     }
+
+    pub fn is_filled(&mut self) -> bool {
+        self.size == 0.0
+    }
 }
 
 impl Limit {
@@ -47,6 +51,25 @@ impl Limit {
 
     pub fn add_order(&mut self, order: Order) {
         self.orders.push(order);
+    }
+
+    pub fn fill_order(&mut self, order: &mut Order) {
+        for limit_order in self.orders.iter_mut() {
+            match order.size >= limit_order.size {
+                true => {
+                    order.size -= limit_order.size;
+                    limit_order.size = 0.0;
+                }
+                false => {
+                    limit_order.size -= order.size;
+                    order.size = 0.0;
+                }
+            }
+
+            if order.is_filled() {
+                break;
+            }
+        }
     }
 }
 
