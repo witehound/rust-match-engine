@@ -39,6 +39,10 @@ impl Order {
     pub fn is_filled(&mut self) -> bool {
         self.size == 0.0
     }
+
+    pub fn to_string(&self) -> String {
+        format!("{}", self.size)
+    }
 }
 
 impl Limit {
@@ -99,6 +103,38 @@ impl OrderBook {
         OrderBook {
             bids: HashMap::new(),
             asks: HashMap::new(),
+        }
+    }
+
+    pub fn fill_market_order(&mut self, price: f64, order: Order) -> Result<(), f64> {
+        let price = Price::new(price);
+        match order.order_type {
+            BidOrAsk::Ask => {
+                let limit = self.asks.get_mut(&price);
+                match limit {
+                    Some(limit) => {
+                        if limit.total_volume() < order.size {
+                            Err(format!("Not enough volume to match order {:?}", order.size))
+                        }
+
+                        Ok(())
+                    }
+                    None => Err(format!("price out of ranges")),
+                }
+            }
+            BidOrAsk::Bid => {
+                let limit = self.asks.get_mut(&price);
+                match limit {
+                    Some(limit) => {
+                        if limit.total_volume() < order.size {
+                            Err(format!("Not enough volume to match order"))
+                        }
+
+                        Ok(())
+                    }
+                    None => Err(format!("price out of ranges")),
+                }
+            }
         }
     }
 
