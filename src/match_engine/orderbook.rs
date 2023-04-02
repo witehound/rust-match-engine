@@ -1,7 +1,5 @@
 use std::collections::HashMap;
 
-\
-
 #[derive(Debug, Clone)]
 pub struct Order {
     size: f64,
@@ -108,20 +106,20 @@ impl OrderBook {
         }
     }
 
-    pub fn fill_market_order(&mut self, price: f64, order: Order) -> Result<(), f64> {
+    pub fn fill_market_order(&mut self, price: f64, order: Order) -> Result<(), String> {
         let price = Price::new(price);
         match order.order_type {
             BidOrAsk::Ask => {
                 let limit = self.asks.get_mut(&price);
                 match limit {
                     Some(limit) => {
-                        if limit.total_volume() < order.size {
-                            Err(format!("Not enough volume to match order {:?}", order.size))
+                        if limit.total_volume() > order.size {
+                            return Err(format!("Not enough volume to fill order"));
                         }
 
                         Ok(())
                     }
-                    None => Err(format!("price out of ranges")),
+                    None => Err(format!("price out of range")),
                 }
             }
             BidOrAsk::Bid => {
@@ -129,12 +127,12 @@ impl OrderBook {
                 match limit {
                     Some(limit) => {
                         if limit.total_volume() < order.size {
-                            Err(format!("Not enough volume to match order"))
+                            return Err(format!("Not enough volume to fill order"));
                         }
 
                         Ok(())
                     }
-                    None => Err(format!("price out of ranges")),
+                    None => Err(format!("price out of range")),
                 }
             }
         }
