@@ -1,7 +1,5 @@
 use std::collections::HashMap;
 
-// order book in wokring condition
-
 #[derive(Debug, Clone)]
 pub struct Order {
     size: f64,
