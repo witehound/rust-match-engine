@@ -1,5 +1,7 @@
 use std::collections::HashMap;
 
+//git school work
+
 #[derive(Debug, Clone)]
 pub struct Order {
     size: f64,
