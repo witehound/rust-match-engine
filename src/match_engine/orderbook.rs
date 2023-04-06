@@ -1,5 +1,4 @@
 use std::collections::HashMap;
-// school work
 
 #[derive(Debug, Clone)]
 pub struct Order {
