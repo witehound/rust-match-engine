@@ -1,5 +1,7 @@
 use std::collections::HashMap;
 
+// strengths of materials
+
 #[derive(Debug, Clone)]
 pub struct Order {
     size: f64,
