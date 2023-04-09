@@ -106,7 +106,7 @@ impl OrderBook {
         }
     }
 
-    pub fn fill_market_order(&mut self, price: f64, order: Order) -> Result<(), String> {
+    pub fn fill_market_order(&mut self, price: f64, mut order: Order) -> Result<(), String> {
         let price = Price::new(price);
         match order.order_type {
             BidOrAsk::Ask => {
@@ -116,6 +116,8 @@ impl OrderBook {
                         if limit.total_volume() > order.size {
                             return Err(format!("Not enough volume to fill order"));
                         }
+
+                        limit.fill_order(&mut order);
 
                         Ok(())
                     }
@@ -129,6 +131,8 @@ impl OrderBook {
                         if limit.total_volume() < order.size {
                             return Err(format!("Not enough volume to fill order"));
                         }
+
+                        limit.fill_order(&mut order);
 
                         Ok(())
                     }
