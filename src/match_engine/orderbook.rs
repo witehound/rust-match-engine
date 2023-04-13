@@ -45,8 +45,6 @@ impl Order {
     }
 }
 
-//final commit
-
 impl Limit {
     pub fn new(price: Price) -> Limit {
         Limit {
